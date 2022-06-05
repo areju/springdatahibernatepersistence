@@ -30,7 +30,6 @@ import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.manning.javapersistence.ch06.model.AuctionType;
 
 
 
