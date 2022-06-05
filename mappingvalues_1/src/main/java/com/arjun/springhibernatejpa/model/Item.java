@@ -30,6 +30,8 @@ import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.manning.javapersistence.ch06.model.AuctionType;
+
 
 
 
@@ -88,6 +90,10 @@ public class Item {
     		)
     private BigDecimal initialPrice;
     
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuctionType auctionType = AuctionType.HIGHEST_BID;
+    
     public String getName() {
         return name;
     }
@@ -131,6 +137,14 @@ public class Item {
     
     public LocalDate getLastModified() {
     	return lastModified;
+    }
+    
+    public AuctionType getAuctionType() {
+        return auctionType;
+    }
+
+    public void setAuctionType(AuctionType auctionType) {
+        this.auctionType = auctionType;
     }
 
 
