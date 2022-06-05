@@ -4,6 +4,7 @@
 package com.arjun.springhibernatejpa.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,8 +23,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 
@@ -70,6 +75,19 @@ public class Item {
     )
     private double metricWeight;
     
+    @CreationTimestamp
+    private LocalDate createdOn;
+    
+    @UpdateTimestamp
+    private LocalDate lastModified;
+    
+    @Column(insertable = false)
+    @ColumnDefault("1.0")
+    @Generated(
+    		org.hibernate.annotations.GenerationTime.INSERT
+    		)
+    private BigDecimal initialPrice;
+    
     public String getName() {
         return name;
     }
@@ -105,6 +123,14 @@ public class Item {
 
     public void setMetricWeight(double metricWeight) {
         this.metricWeight = metricWeight;
+    }
+    
+    public LocalDate getCreatedOn() {
+        return createdOn;
+    }
+    
+    public LocalDate getLastModified() {
+    	return lastModified;
     }
 
 
