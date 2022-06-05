@@ -5,6 +5,7 @@ package com.arjun.springhibernatejpa.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +22,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -80,7 +83,7 @@ public class Item {
     private LocalDate createdOn;
     
     @UpdateTimestamp
-    private LocalDate lastModified;
+    private LocalDateTime lastModified;
     
     @Column(insertable = false)
     @ColumnDefault("1.0")
@@ -134,7 +137,7 @@ public class Item {
         return createdOn;
     }
     
-    public LocalDate getLastModified() {
+    public LocalDateTime getLastModified() {
     	return lastModified;
     }
     
@@ -144,6 +147,10 @@ public class Item {
 
     public void setAuctionType(AuctionType auctionType) {
         this.auctionType = auctionType;
+    }
+    
+    public BigDecimal getInitialPrice() {
+    	return initialPrice;
     }
 
 
