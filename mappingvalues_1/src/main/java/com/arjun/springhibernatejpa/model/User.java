@@ -1,11 +1,13 @@
 package com.arjun.springhibernatejpa.model;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.manning.javapersistence.ch06.model.Address;
 
 @Entity
 @Table(name="USERS")
@@ -16,6 +18,12 @@ public class User {
 	private Long id;
 	
 	private String username;
+	
+	@Embedded
+	@AttributeOverride(name = "street", column = @Column(name="BILLING_STREET") )
+	@AttributeOverride(name = "zipcode", column = @Column(name="BILLING_ZIPCODE", length = 5))
+	@AttributeOverride(name = "city", column = @Column(name="BILLING_CITY"))	
+	private Address billingAddress;
 	
 	private Address homeAddress;
 
@@ -39,7 +47,14 @@ public class User {
         this.homeAddress = homeAddress;
     }
 	
-	
+    public Address getBillingAddress() {
+        return billingAddress;
+    }
+ 
+    public void setBillingAddress(Address billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
 	
 
 }
