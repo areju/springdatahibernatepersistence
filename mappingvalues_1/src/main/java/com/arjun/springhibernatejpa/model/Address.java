@@ -23,7 +23,7 @@ public class Address {
 	}
 	
 	
-    public Address(String street, String zipcode, City city) {
+    public Address(String street, City city) {
         this.street = street;
         this.city = city;
     }
