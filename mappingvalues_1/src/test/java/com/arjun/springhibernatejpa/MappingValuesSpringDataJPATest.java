@@ -8,7 +8,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 import org.hibernate.type.descriptor.java.LocaleTypeDescriptor;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,7 @@ import com.arjun.springhibernatejpa.configuration.SpringDataConfiguration;
 import com.arjun.springhibernatejpa.model.Address;
 import com.arjun.springhibernatejpa.model.AuctionType;
 import com.arjun.springhibernatejpa.model.Item;
+import com.arjun.springhibernatejpa.model.MonetaryAmount;
 import com.arjun.springhibernatejpa.model.User;
 import com.arjun.springhibernatejpa.repository.ItemRepository;
 import com.arjun.springhibernatejpa.repository.UserRepository;
@@ -50,6 +53,7 @@ public class MappingValuesSpringDataJPATest {
         item.setName("Some Item");
         item.setMetricWeight(2);
         item.setDescription("descriptiondescription");
+        item.setBuyNowPrice(new MonetaryAmount(new BigDecimal("1.1"), Currency.getInstance(Locale.US)));
         itemRepository.save(item);
 
         List<User> users = (List<User>) userRepository.findAll();
@@ -69,7 +73,10 @@ public class MappingValuesSpringDataJPATest {
                 () -> assertEquals(2.0, items.get(0).getMetricWeight()),
                 () -> assertEquals(LocalDate.now(), items.get(0).getCreatedOn()),
                 () -> assertTrue(ChronoUnit.SECONDS.between(LocalDateTime.now(),items.get(0).getLastModified()) < 1),
-                () -> assertEquals(new BigDecimal("1.00"), items.get(0).getInitialPrice())
+                () -> assertEquals(new BigDecimal("1.00"), items.get(0).getInitialPrice()),
+                () -> assertEquals(new BigDecimal("1.1") , items.get(0).getBuyNowPrice().getValue()),
+                () -> assertEquals(Currency.getInstance(Locale.US), items.get(0).getBuyNowPrice().getCurrency()),
+                () -> assertEquals("1.1 USD", items.get(0).getBuyNowPrice().toString())
         );
 
     }
