@@ -15,6 +15,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -32,6 +33,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.arjun.springhibernatejpa.converter.MonetaryAmountConverter;
 
 
 
@@ -96,6 +99,12 @@ public class Item {
     @Enumerated(EnumType.STRING)
     private AuctionType auctionType = AuctionType.HIGHEST_BID;
     
+    @NotNull
+    @Convert(converter = MonetaryAmountConverter.class)
+    @Column(name = "PRICE", length =63)
+    private MonetaryAmount buyNowPrice;
+    
+    
     public String getName() {
         return name;
     }
@@ -153,5 +162,12 @@ public class Item {
     	return initialPrice;
     }
 
+	public MonetaryAmount getBuyNowPrice() {
+		return buyNowPrice;
+	}
 
+	public void setBuyNowPrice(MonetaryAmount buyNowPrice) {
+		this.buyNowPrice = buyNowPrice;
+	}
+    
 }
