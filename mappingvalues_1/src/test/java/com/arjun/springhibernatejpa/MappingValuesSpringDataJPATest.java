@@ -22,6 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.arjun.springhibernatejpa.configuration.SpringDataConfiguration;
 import com.arjun.springhibernatejpa.model.Address;
 import com.arjun.springhibernatejpa.model.AuctionType;
+import com.arjun.springhibernatejpa.model.City;
 import com.arjun.springhibernatejpa.model.Item;
 import com.arjun.springhibernatejpa.model.MonetaryAmount;
 import com.arjun.springhibernatejpa.model.User;
@@ -44,9 +45,14 @@ public class MappingValuesSpringDataJPATest {
     @Test
     void storeLoadEntities() {
 
+    	City city = new City();
+    	city.setName("abc city");
+    	city.setCountry("abc country");
+    	city.setZipcode("12345");
+    	
         User user = new User();
         user.setUsername("abc user");
-        user.setHomeAddress(new Address("abc street", "12345", "abc city"));
+        user.setHomeAddress(new Address("abc street", city));
         userRepository.save(user);
 
         Item item = new Item();
@@ -63,8 +69,9 @@ public class MappingValuesSpringDataJPATest {
                 () -> assertEquals(1, users.size()),
                 () -> assertEquals("abc user", users.get(0).getUsername()),
                 () -> assertEquals("abc street", user.getHomeAddress().getStreet()),
-                () -> assertEquals("12345", user.getHomeAddress().getZipcode()),
-                () -> assertEquals("abc city", user.getHomeAddress().getCity()),
+                () -> assertEquals("12345", user.getHomeAddress().getCity().getZipcode()),
+                () -> assertEquals("abc city", user.getHomeAddress().getCity().getName()),
+                () -> assertEquals("abc country", user.getHomeAddress().getCity().getCountry()),
                 () -> assertEquals(1, items.size()),
                 () -> assertEquals("AUCTION: Some Item", items.get(0).getName()),
                 () -> assertEquals(AuctionType.HIGHEST_BID, items.get(0).getAuctionType()),
