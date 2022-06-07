@@ -2,10 +2,12 @@ package com.arjun.codeseven.model;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@DiscriminatorValue("CC")
 public class CreditCard extends BillingDetails {
 	
 	@NotNull
