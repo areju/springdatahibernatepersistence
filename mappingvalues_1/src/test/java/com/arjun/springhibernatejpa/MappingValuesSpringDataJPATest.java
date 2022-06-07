@@ -23,6 +23,7 @@ import com.arjun.springhibernatejpa.configuration.SpringDataConfiguration;
 import com.arjun.springhibernatejpa.model.Address;
 import com.arjun.springhibernatejpa.model.AuctionType;
 import com.arjun.springhibernatejpa.model.City;
+import com.arjun.springhibernatejpa.model.GermanZipcode;
 import com.arjun.springhibernatejpa.model.Item;
 import com.arjun.springhibernatejpa.model.MonetaryAmount;
 import com.arjun.springhibernatejpa.model.User;
@@ -48,11 +49,12 @@ public class MappingValuesSpringDataJPATest {
     	City city = new City();
     	city.setName("abc city");
     	city.setCountry("abc country");
-    	city.setZipcode("12345");
+    	city.setZipcode(new GermanZipcode("12345"));
     	
         User user = new User();
         user.setUsername("abc user");
         user.setHomeAddress(new Address("abc street", city));
+        user.setBillingAddress(new Address("abc street", city));
         userRepository.save(user);
 
         Item item = new Item();
@@ -60,6 +62,7 @@ public class MappingValuesSpringDataJPATest {
         item.setMetricWeight(2);
         item.setDescription("descriptiondescription");
         item.setBuyNowPrice(new MonetaryAmount(new BigDecimal("1.1"), Currency.getInstance(Locale.US)));
+        item.setInitialPrice(new MonetaryAmount(new BigDecimal(1.0), Currency.getInstance(Locale.US)));
         itemRepository.save(item);
 
         List<User> users = (List<User>) userRepository.findAll();
@@ -69,7 +72,7 @@ public class MappingValuesSpringDataJPATest {
                 () -> assertEquals(1, users.size()),
                 () -> assertEquals("abc user", users.get(0).getUsername()),
                 () -> assertEquals("abc street", user.getHomeAddress().getStreet()),
-                () -> assertEquals("12345", user.getHomeAddress().getCity().getZipcode()),
+                () -> assertEquals("12345", user.getHomeAddress().getCity().getZipcode().getValue()),
                 () -> assertEquals("abc city", user.getHomeAddress().getCity().getName()),
                 () -> assertEquals("abc country", user.getHomeAddress().getCity().getCountry()),
                 () -> assertEquals(1, items.size()),
@@ -80,10 +83,9 @@ public class MappingValuesSpringDataJPATest {
                 () -> assertEquals(2.0, items.get(0).getMetricWeight()),
                 () -> assertEquals(LocalDate.now(), items.get(0).getCreatedOn()),
                 () -> assertTrue(ChronoUnit.SECONDS.between(LocalDateTime.now(),items.get(0).getLastModified()) < 1),
-                () -> assertEquals(new BigDecimal("1.00"), items.get(0).getInitialPrice()),
-                () -> assertEquals(new BigDecimal("1.1") , items.get(0).getBuyNowPrice().getValue()),
+                () -> assertEquals("2.00 EUR", items.get(0).getInitialPrice().toString()),
                 () -> assertEquals(Currency.getInstance(Locale.US), items.get(0).getBuyNowPrice().getCurrency()),
-                () -> assertEquals("1.1 USD", items.get(0).getBuyNowPrice().toString())
+                () -> assertEquals("2.20 USD", items.get(0).getBuyNowPrice().toString())
         );
 
     }
