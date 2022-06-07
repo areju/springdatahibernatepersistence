@@ -2,8 +2,11 @@ package com.arjun.springhibernatejpa.model;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+
+import com.arjun.springhibernatejpa.converter.ZipcodeConverter;
 
 @Embeddable
 public class Address {

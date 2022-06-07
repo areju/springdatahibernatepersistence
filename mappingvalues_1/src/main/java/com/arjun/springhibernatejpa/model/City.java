@@ -1,5 +1,6 @@
 package com.arjun.springhibernatejpa.model;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
@@ -10,13 +11,14 @@ public class City {
 	@Column(nullable = false)
 	private String name;
 	
-	@NotNull
-	@Column(nullable = false,length = 5)
-	private String zipcode;
-	
+
 	@NotNull
 	@Column(nullable = false)
 	private String country;
+	
+    @NotNull
+    @Column(nullable = false, length = 5) 
+	private Zipcode zipcode;
 
 	public String getName() {
 		return name;
@@ -26,11 +28,11 @@ public class City {
 		this.name = name;
 	}
 
-	public String getZipcode() {
+	public Zipcode getZipcode() {
 		return zipcode;
 	}
 
-	public void setZipcode(String zipcode) {
+	public void setZipcode(Zipcode zipcode) {
 		this.zipcode = zipcode;
 	}
 
