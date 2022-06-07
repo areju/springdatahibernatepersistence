@@ -67,7 +67,7 @@ public class MappingInheritanceSpringDataJPATest {
 		assertAll(
 				() -> assertEquals(2, billingDetailsRepository.findAll().size()),
 				() -> assertEquals(1, billingDetailsRepository.findByOwner("abc owner").size()),
-				() -> assertEquals("abc user1", det.get(0).getOwner()));
+				() -> assertEquals("abc owner1", det.get(0).getOwner()));
 	}
 	
 	
