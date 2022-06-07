@@ -26,12 +26,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.arjun.springhibernatejpa.converter.MonetaryAmountConverter;
@@ -88,21 +91,30 @@ public class Item {
     @UpdateTimestamp
     private LocalDateTime lastModified;
     
-    @Column(insertable = false)
-    @ColumnDefault("1.0")
-    @Generated(
-    		org.hibernate.annotations.GenerationTime.INSERT
-    		)
-    private BigDecimal initialPrice;
+    @NotNull
+    @Type(
+    		type = "monetary_amount_eur")
+    @Columns(columns = {
+    		@Column(name="INITIALPRICE_AMOUNT"),
+    		@Column(name="INITTIALPRICE_CURRENCY", length = 3)
+    })
+    private MonetaryAmount initialPrice;
     
     @NotNull
     @Enumerated(EnumType.STRING)
     private AuctionType auctionType = AuctionType.HIGHEST_BID;
     
     @NotNull
-    @Convert(converter = MonetaryAmountConverter.class)
-    @Column(name = "PRICE", length =63)
+    @Type(
+    		type = "monetary_amount_usd"
+    )
+    @Columns( columns = {
+    		@Column(name = "BUYNOWPRICE_AMOUNT"),
+    		@Column(name = "BUYNOWPRICE_CURRENCY", length = 3)
+    })
     private MonetaryAmount buyNowPrice;
+    
+    
     
     
     public String getName() {
@@ -158,8 +170,12 @@ public class Item {
         this.auctionType = auctionType;
     }
     
-    public BigDecimal getInitialPrice() {
+    public MonetaryAmount getInitialPrice() {
     	return initialPrice;
+    }
+    
+    public void setInitialPrice(MonetaryAmount initialPrice) {
+    	this.initialPrice = initialPrice;
     }
 
 	public MonetaryAmount getBuyNowPrice() {
