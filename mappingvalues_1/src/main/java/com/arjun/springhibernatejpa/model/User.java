@@ -2,11 +2,15 @@ package com.arjun.springhibernatejpa.model;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.arjun.springhibernatejpa.converter.ZipcodeConverter;
+
 
 
 @Entity
@@ -19,13 +23,22 @@ public class User {
 	
 	private String username;
 	
-	@Embedded
-	@AttributeOverride(name = "street", column = @Column(name="BILLING_STREET") )
-	@AttributeOverride(name = "city.zipcode", column = @Column(name="BILLING_ZIPCODE", length = 5))
-	@AttributeOverride(name = "city.name", column = @Column(name="BILLING_CITY"))
-	@AttributeOverride(name = "city.country", column = @Column(name="BILLING_COUNTRY"))
+	
+	@AttributeOverride(name = "street", column = @Column(name="BILLING_STREET", nullable = true) )
+	@AttributeOverride(name = "city.zipcode", column = @Column(name="BILLING_ZIPCODE", length = 5, nullable = true))
+	@AttributeOverride(name = "city.name", column = @Column(name="BILLING_CITY", nullable = true))
+	@AttributeOverride(name = "city.country", column = @Column(name="BILLING_COUNTRY", nullable = true))
+	@Convert(
+			converter = ZipcodeConverter.class,
+	        attributeName = "city.zipcode"
+			)
 	private Address billingAddress;
 	
+	
+	@Convert(
+			converter = ZipcodeConverter.class,
+	        attributeName = "city.zipcode"
+			)
 	private Address homeAddress;
 
 	public Long getId() {
