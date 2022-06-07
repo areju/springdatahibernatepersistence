@@ -36,10 +36,10 @@ public class MappingInheritanceSpringDataJPATest {
 		
 		
 		CreditCard creditcard = new CreditCard("abc owner", "1234567890123456", "12", "32");
-		creditCardRepo.save(creditcard);
+		billingDetailsRepository.save(creditcard);
 		
 		BankAccount ba = new BankAccount("abc owner1", "account one", "abc bank","abc swift");
-		bankAccountRepo.save(ba);
+		billingDetailsRepository.save(ba);
 		
 		// TABLE PER CONCRETE CLASS WITH INHERENT POLYMORPHMISM: NOT RECOMENDED 
 		/*
@@ -62,12 +62,24 @@ public class MappingInheritanceSpringDataJPATest {
 		
 		//TABLE PER CONCRETE CLASS WITH UNIONS
 		
+		/*
 		List<BillingDetails> det = billingDetailsRepository.findByOwner("abc owner1");
 		
 		assertAll(
 				() -> assertEquals(2, billingDetailsRepository.findAll().size()),
 				() -> assertEquals(1, billingDetailsRepository.findByOwner("abc owner").size()),
 				() -> assertEquals("abc owner1", det.get(0).getOwner()));
+		*/
+		
+		//TABLE PER HIERARCHY: SINGLE TABLE
+		
+		List<BillingDetails> det = billingDetailsRepository.findByOwner("abc owner1");
+		assertAll(
+				() -> assertEquals(2, billingDetailsRepository.findAll().size()),
+				() -> assertEquals(1, det.size()),
+				() -> assertEquals("abc owner1", det.get(0).getOwner()));
+		
+		
 	}
 	
 	
