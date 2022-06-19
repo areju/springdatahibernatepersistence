@@ -1,5 +1,6 @@
 package com.arjun.setofstrings;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,9 +34,31 @@ public class Item {
 		
 	}
 	
+	public Long getId() {
+		return id;
+	}
+	
 	public Item(String name) {
 		this.name = name;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public Set<String> getImages() {
+		return Collections.unmodifiableSet(this.images);
+	}
+	
+	public void addImage(String img) {
+		this.images.add(img);
+	}
+	
+	
 	
 
 }
