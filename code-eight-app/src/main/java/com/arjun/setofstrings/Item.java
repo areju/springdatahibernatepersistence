@@ -8,6 +8,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -23,23 +24,23 @@ public class Item {
 	
 	private String name;
 	
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(
 			name = "IMAGE",
 			joinColumns = @JoinColumn(name = "ITEM_ID"))
 	@Column(name = "FILENAME")
-	private Set<String> images = new HashSet<String>();
+	private Set<String> images = new HashSet<>();
 	
 	public Item() {
 		
 	}
+		
+	public Item(String name) {
+		this.name = name;
+	}
 	
 	public Long getId() {
 		return id;
-	}
-	
-	public Item(String name) {
-		this.name = name;
 	}
 
 	public String getName() {
@@ -51,11 +52,11 @@ public class Item {
 	}
 	
 	public Set<String> getImages() {
-		return Collections.unmodifiableSet(this.images);
+		return Collections.unmodifiableSet(images);
 	}
 	
 	public void addImage(String img) {
-		this.images.add(img);
+		images.add(img);
 	}
 	
 	

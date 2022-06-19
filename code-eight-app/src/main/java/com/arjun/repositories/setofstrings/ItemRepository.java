@@ -11,10 +11,10 @@ import com.arjun.setofstrings.Item;
 
 public interface ItemRepository extends JpaRepository<Item, Long>{
 	
-	@Query("select i from Item i inner join fetch i.images where i.id = :id ")
+    @Query("select i from Item i inner join fetch i.images where i.id = :id")
 	public Item findItemWithImages(@Param("id") Long id);
 	
-	@Query(value = "select FILENAME from IMAGE where ITEM_ID = ?1", nativeQuery = true)
+	@Query(value = "SELECT FILENAME from IMAGE WHERE ITEM_ID = ?1", nativeQuery = true)
 	public Set<String> findImagesNative(@Param("id") Long id);
 
 }

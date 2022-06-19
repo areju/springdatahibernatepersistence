@@ -3,6 +3,7 @@ package com.arjun.setofstrings;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -19,6 +20,7 @@ public class SetofStringsJPATest {
 	@Autowired
 	private ItemRepository itemRepo;
 	
+	@Test
 	void storeLoadEntities( ) {
 		
 		Item item = new Item("Spring");
